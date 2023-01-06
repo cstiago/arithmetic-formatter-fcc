@@ -1,5 +1,4 @@
 import pytest
-
 from arithmetic_arranger import arithmetic_arranger
 
 test_cases = [
@@ -69,7 +68,6 @@ test_cases = [
         'Expected solutions to be correctly displayed in output when calling "arithmetic_arranger()" with five arithmetic problems and a second argument of `True`.',
         id='test_five_problems_with_solutions'),
 ]
-
 
 @pytest.mark.parametrize('arguments,expected_output,fail_message', test_cases)
 def test_template(arguments, expected_output, fail_message):
