@@ -1,6 +1,9 @@
 def space_calc(longest, second):
     return ' ' * (len(longest) - len(second)) + second
 
+def dash_calc(longest):
+    return '-' * (2 + len(longest))
+
 def arithmetic_arranger(problems, display_answers=False):
     elements = []
     line1 = line2 = line3 = line4 = ''
@@ -26,6 +29,8 @@ def arithmetic_arranger(problems, display_answers=False):
 
             line1 += space_calc(longest, second)
             line2 += longest
+        
+        line3 += dash_calc(longest)
 
     arranged_problems = ''
 
