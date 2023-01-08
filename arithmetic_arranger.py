@@ -1,3 +1,18 @@
+def error_handlers(problems, operand_a, operand_b, operator):
+    if len(problems) > 5:
+        return "Error: Too many problems."
+    
+    if operator != '+' and operator != '-':
+        return "Error: Operator must be '+' or '-'."
+
+    if not operand_a.isnumeric() or not operand_b.isnumeric():
+        return "Error: Numbers must only contain digits."
+
+    if len(operand_a) > 4 or len(operand_b) > 4:
+        return "Error: Numbers cannot be more than four digits."
+    
+    return False
+
 def space_calc(longest, second):
     return ' ' * (len(longest) - len(second)) + second
 
@@ -8,9 +23,6 @@ def dash_calc(longest):
     return '-' * problem_length(longest)
 
 def arithmetic_arranger(problems, display_answers=False):
-    if len(problems) > 5:
-        return "Error: Too many problems."
-
     elements = []
     line1 = line2 = line3 = line4 = ''
     space = ' '
@@ -22,14 +34,10 @@ def arithmetic_arranger(problems, display_answers=False):
 
         operand_a, operator, operand_b = elements[count]
 
-        if operator != '+' and operator != '-':
-            return "Error: Operator must be '+' or '-'."
+        error = error_handlers(problems, operand_a, operand_b, operator)
 
-        if not operand_a.isnumeric() or not operand_b.isnumeric():
-            return "Error: Numbers must only contain digits."
-
-        if len(operand_a) > 4 or len(operand_b) > 4:
-            return "Error: Numbers cannot be more than four digits."
+        if error:
+            return error
 
         line1 += space * 2
         line2 += operator + space
