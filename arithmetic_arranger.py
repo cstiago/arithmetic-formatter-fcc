@@ -1,3 +1,18 @@
+def error_handlers(problems, operand_a, operand_b, operator):
+    if len(problems) > 5:
+        return "Error: Too many problems."
+    
+    if operator != '+' and operator != '-':
+        return "Error: Operator must be '+' or '-'."
+
+    if not operand_a.isnumeric() or not operand_b.isnumeric():
+        return "Error: Numbers must only contain digits."
+
+    if len(operand_a) > 4 or len(operand_b) > 4:
+        return "Error: Numbers cannot be more than four digits."
+    
+    return False
+
 def space_calc(longest, second):
     return ' ' * (len(longest) - len(second)) + second
 
@@ -8,31 +23,18 @@ def dash_calc(longest):
     return '-' * problem_length(longest)
 
 def arithmetic_arranger(problems, display_answers=False):
-    if len(problems) > 5:
-        return "Error: Too many problems."
-
-    elements = []
-    line1 = line2 = line3 = line4 = ''
-    space = ' '
-    gap = space * 4
-    skip = '\n'
+    line1 = line2 = line3 = line4 = str()
 
     for count, problem in enumerate(problems):
-        elements.append(problem.split())
+        operand_a, operator, operand_b = problem.split()
 
-        operand_a, operator, operand_b = elements[count]
+        error = error_handlers(problems, operand_a, operand_b, operator)
 
-        if operator != '+' and operator != '-':
-            return "Error: Operator must be '+' or '-'."
+        if error:
+            return error
 
-        if not operand_a.isnumeric() or not operand_b.isnumeric():
-            return "Error: Numbers must only contain digits."
-
-        if len(operand_a) > 4 or len(operand_b) > 4:
-            return "Error: Numbers cannot be more than four digits."
-
-        line1 += space * 2
-        line2 += operator + space
+        line1 += ' ' * 2
+        line2 += operator + ' '
 
         if len(operand_a) >= len(operand_b):
             longest = operand_a
@@ -40,7 +42,6 @@ def arithmetic_arranger(problems, display_answers=False):
 
             line1 += longest
             line2 += space_calc(longest, second)
-
         else:
             longest = operand_b
             second = operand_a
@@ -60,15 +61,15 @@ def arithmetic_arranger(problems, display_answers=False):
         
         answer = str(answer)
 
-        line4 += space * (problem_length(longest) - len(answer)) + answer
+        line4 += ' ' * (problem_length(longest) - len(answer)) + answer
 
         if count != len(problems) - 1:
             text = line1, line2, line3, line4
-            line1, line2, line3, line4 = [line + gap for line in text]
+            line1, line2, line3, line4 = [line + (' ' * 4) for line in text]
 
-    arranged_problems = line1 + skip + line2 + skip + line3
+    arranged_problems = '\n'.join([line1, line2, line3])
 
     if display_answers:
-        arranged_problems += skip + line4
+        arranged_problems = '\n'.join([arranged_problems, line4])
 
     return arranged_problems
