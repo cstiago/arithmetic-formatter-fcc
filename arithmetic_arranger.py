@@ -23,16 +23,13 @@ def dash_calc(longest):
     return '-' * problem_length(longest)
 
 def arithmetic_arranger(problems, display_answers=False):
-    elements = []
     line1 = line2 = line3 = line4 = ''
     space = ' '
     gap = space * 4
     skip = '\n'
 
     for count, problem in enumerate(problems):
-        elements.append(problem.split())
-
-        operand_a, operator, operand_b = elements[count]
+        operand_a, operator, operand_b = problem.split()
 
         error = error_handlers(problems, operand_a, operand_b, operator)
 
@@ -48,7 +45,6 @@ def arithmetic_arranger(problems, display_answers=False):
 
             line1 += longest
             line2 += space_calc(longest, second)
-
         else:
             longest = operand_b
             second = operand_a
