@@ -1,7 +1,7 @@
-def error_handlers(problems, operator, *operands):
+def error_handlers(problems, operator, operands):
     if len(problems) > 5:
         return "Error: Too many problems."
-    
+
     if operator != '+' and operator != '-':
         return "Error: Operator must be '+' or '-'."
 
@@ -10,17 +10,8 @@ def error_handlers(problems, operator, *operands):
 
     if any([len(operand) > 4 for operand in operands]):
         return "Error: Numbers cannot be more than four digits."
-    
+
     return False
-
-def space_calc(longest, second):
-    return ' ' * (len(longest) - len(second)) + second
-
-def problem_length(longest):
-    return len(' ' * (2 + len(longest)))
-
-def dash_calc(longest):
-    return '-' * problem_length(longest)
 
 def arithmetic_arranger(problems, display_answers=False):
     lines = [str() for line in range(4)]
@@ -29,42 +20,26 @@ def arithmetic_arranger(problems, display_answers=False):
         operands = [int()] * 2
         operands[0], operator, operands[1] = problem.split()
 
-        error = error_handlers(problems, operator, *operands)
+        error = error_handlers(problems, operator, operands)
 
         if error:
             return error
 
-        lines[0] += ' ' * 2
-        lines[1] += f'{operator} '
+        max_len = len(str(max([int(operand) for operand in operands])))
 
-        if len(operands[0]) >= len(operands[1]):
-            longest = operands[0]
-            second = operands[1]
-
-            lines[0] += longest
-            lines[1] += space_calc(longest, second)
-        else:
-            longest = operands[1]
-            second = operands[0]
-
-            lines[0] += space_calc(longest, second)
-            lines[1] += longest
-        
-        lines[2] += dash_calc(longest)
+        lines[0] += operands[0].rjust(2 + max_len)
+        lines[1] += operator.ljust(2) + operands[1].rjust(max_len)
+        lines[2] += '-' * (2 + max_len)
 
         operands = [int(i) for i in operands]
 
-        if operator == '+':
-            answer = sum(operands)
-        elif operator == '-':
-            answer = operands[0] - operands[1]
-        
+        answer = sum(operands) if operator == '+' else operands[0] - operands[1]
         answer = str(answer)
 
-        lines[3] += ' ' * (problem_length(longest) - len(answer)) + answer
+        lines[3] += answer.rjust(2 + max_len)
 
         if count != len(problems) - 1:
-            lines[0], lines[1], lines[2], lines[3] = [line + (' ' * 4) for line in lines]
+            lines = [line + (' ' * 4) for line in lines]
 
     arranged_problems = '\n'.join(lines[:3])
 
